@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
   // Función para cerrar sesión
   document.getElementById("logout-btn").addEventListener("click", function() {
       localStorage.removeItem("profesorEmail");
-      localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("isAuthenticated");
       window.location.href = "./index.html";  // Redirigir a la página principal
   });
 });
