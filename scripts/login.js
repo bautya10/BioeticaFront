@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
 document.getElementById('toggle-password').addEventListener('click', function() {
     const passwordInput = document.getElementById('password');
     if (passwordInput.type === 'password') {

@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
       logoutLink.style.display = "none";  // Ocultar "Cerrar Sesión"
   }
 
+
   // Función para cerrar sesión
   document.getElementById("logout-btn").addEventListener("click", function() {
       localStorage.removeItem("profesorEmail");
