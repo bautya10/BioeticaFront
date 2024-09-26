@@ -1,5 +1,14 @@
+body {
+  position: relative;
+  padding-bottom: 3em;
+  min-height: 100vh;
+}
+
 footer {
+  background-color: rgba(226, 217, 206, 0.285);
+  text-align: center;
   position: absolute;
   bottom: 0;
   width: 100%;
+  padding: 1em ;
 }
