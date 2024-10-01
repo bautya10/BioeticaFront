@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../styles/main.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Jornada de Bioética</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,13 +17,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto" id="navbar-links">
                     <li class="nav-item">
-                        <a class="nav-link" href="./index.html">Inicio</a>
+                        <a class="nav-link" aria-current="page" href="./index.html">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./activities.html">Actividades</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="./misActividades.html">Mis Actividades</a>
+                    <li class="nav-item" id="mis-actividades-nav" >
+                        <a class="nav-link" href="./misActividades.html">Mis Actividades</a>
+                    </li>
+                    <li class="nav-item" id="login-link" style="display: none;">
+                        <a class="nav-link" href="./login.html">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item" id="logout-link">
                         <a class="nav-link" href="#" id="logout-btn">Cerrar Sesión</a>
