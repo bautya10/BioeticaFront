@@ -1,8 +1,9 @@
+// URL base de la API
+const API_URL = 'http://localhost:8000/api/activities';
+
 // Selección de elementos del DOM
-const activityForm = document.getElementById('activity-form');
 const activitiesContainer = document.getElementById('activities-container');
 const sortSelect = document.getElementById('sort-activities');
-let activities = JSON.parse(localStorage.getItem('professorActivities')) || [];
 
 // Cargar las actividades al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,9 +16,17 @@ sortSelect.addEventListener('change', () => {
 });
 
 // Función para cargar las actividades en la lista
-function loadActivities() {
+async function loadActivities() {
     const sortOption = sortSelect.value;
-    let sortedActivities = [...activities];
+    let sortedActivities;
+
+    try {
+        const response = await fetch(API_URL);
+        sortedActivities = await response.json();
+    } catch (error) {
+        console.error('Error al cargar actividades:', error);
+        return;
+    }
 
     // Ordenar las actividades según la selección del usuario
     switch (sortOption) {
@@ -54,22 +63,3 @@ function loadActivities() {
     });
 }
 
-// Función para editar una actividad
-function editActivity(id) {
-    const activity = activities.find(a => a.id === id);
-
-    document.getElementById('activity-title').value = activity.title;
-    document.getElementById('activity-description').value = activity.description;
-    document.getElementById('professor-name').value = activity.professorName;
-
-    // Eliminar la actividad actual para editarla
-    activities = activities.filter(a => a.id !== id);
-    localStorage.setItem('professorActivities', JSON.stringify(activities));
-}
-
-// Función para eliminar una actividad
-function deleteActivity(id) {
-    activities = activities.filter(a => a.id !== id);
-    localStorage.setItem('professorActivities', JSON.stringify(activities));
-    loadActivities();
-}
