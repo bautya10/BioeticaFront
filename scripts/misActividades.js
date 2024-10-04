@@ -5,7 +5,6 @@ const API_URL = 'http://localhost:8000/api/activities';
 const activityForm = document.getElementById('activity-form');
 const activitiesContainer = document.getElementById('activities-container');
 const sortSelect = document.getElementById('sort-activities');
-
 // Cargar las actividades al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
     loadActivities();
@@ -36,7 +35,6 @@ async function addActivity() {
         title,
         description,
         professorName,
-        date: new Date().toLocaleString()
     };
 
     try {
@@ -93,7 +91,7 @@ async function loadActivities() {
 
         // Contenido de la actividad
         activityItem.innerHTML = `
-            <h5>${activity.title} <small class="text-muted">(${activity.date})</small></h5>
+            <h5>${activity.title}</h5>
             <p>${activity.description}</p>
             <p><strong>Profesor:</strong> ${activity.professorName}</p>
             <button class="btn btn-warning btn-sm" onclick="openEditModal('${activity._id}')">Editar</button>
@@ -104,8 +102,6 @@ async function loadActivities() {
     });
 }
 
-// Resto del código permanece igual...
-
 
 // Función para abrir el modal de edición
 function openEditModal(id) {
@@ -114,8 +110,48 @@ function openEditModal(id) {
         .then(response => response.json())
         .then(activity => {
             document.getElementById('activity-title-edit').value = activity.title;
-            document.getElementById('activity-description-edit').value = activity.description;
             document.getElementById('professor-name-edit').value = activity.professorName;
+
+            // Destruir TinyMCE si ya ha sido inicializado previamente
+            if (tinymce.get('activity-description-edit')) {
+                tinymce.get('activity-description-edit').remove();
+            }
+
+            // Inicializar TinyMCE para el campo de descripción
+            document.getElementById('activity-description-edit').value = activity.description; // Establecer la descripción antes de inicializar
+            tinymce.init({
+                selector: '#activity-description-edit',
+                language: 'es_MX',
+                images_upload_handler: (blobInfo, progress) =>
+                    new Promise((resolve, reject) => {
+                        resolve(`data:image/png;base64, ${blobInfo.base64()}`);
+                    }),
+                auto_focus: "main-input",
+                promotion: false,
+                branding: false,
+                menubar: 'file edit view insert format tools',
+                menu: {
+                    file: { title: 'File', items: 'newdocument restoredraft | print' },
+                    edit: { title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace' },
+                    view: { title: 'View', items: 'code | visualaid | preview fullscreen' },
+                    insert: { title: 'Insert', items: 'image link media | charmap emoticons | insertdatetime' },
+                    format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | styles blocks fontfamily fontsize align lineheight | forecolor backcolor | language | removeformat' },
+                    tools: { title: 'Tools', items: ' | wordcount | code' },
+                },
+                toolbar: `
+                    undo redo | 
+                    blocks |
+                    image |
+                    bold italic backcolor | 
+                    alignleft aligncenter alignright alignjustify |
+                    bullist numlist outdent indent | 
+                    removeformat |
+                    fullscreen help
+                `,
+                plugins: 'advlist link image lists preview searchreplace code fullscreen media charmap emoticons insertdatetime wordcount help emoticons table',
+                a_plugin_option: true,
+                a_configuration_option: 400
+            });
 
             const editModal = new bootstrap.Modal(document.getElementById('editActivityModal'));
             editModal.show();
@@ -126,10 +162,12 @@ function openEditModal(id) {
                 saveEditedActivity(id);
             };
         });
-}
-
+    }
 // Función para guardar la actividad editada
 async function saveEditedActivity(id) {
+    // Actualizar el contenido del textarea antes de guardar
+    tinymce.triggerSave();
+
     const activityToEdit = {
         title: document.getElementById('activity-title-edit').value,
         description: document.getElementById('activity-description-edit').value,
@@ -176,3 +214,4 @@ async function deleteActivity(id) {
         console.error('Error al eliminar actividad:', error);
     }
 }
+

@@ -1,3 +1,5 @@
+const API_URL = "http://localhost:8000/api/users/register"
+
 document.addEventListener("DOMContentLoaded", function() {
   const registerForm = document.getElementById('register-form');
   const registerError = document.getElementById('register-error');
@@ -10,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const password = document.getElementById('password').value;
 
       try {
-          const response = await fetch('http://localhost:8000/api/users/register', {
+          const response = await fetch(API_URL, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',

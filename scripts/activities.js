@@ -54,7 +54,7 @@ async function loadActivities() {
 
         // Contenido de la actividad
         activityItem.innerHTML = `
-            <h5>${activity.title} <small class="text-muted">(${activity.date})</small></h5>
+            <h5>${activity.title}</h5>
             <p>${activity.description}</p>
             <p><strong>Profesor:</strong> ${activity.professorName}</p>
         `;
@@ -62,4 +62,3 @@ async function loadActivities() {
         activitiesContainer.appendChild(activityItem);
     });
 }
-
